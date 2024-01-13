@@ -1,0 +1,67 @@
+version: '3'
+services:
+
+  a:
+    build:
+      context: . 
+      dockerfile: a.Dockerfile
+    environment:
+      - POWER_TYPE=A
+      - PORT=8000
+      - MONGO=10.0.0.5:27017
+    ports:
+      - "8000:8000"
+    networks:
+      my_service:
+        ipv4_address: 10.0.0.3
+
+  a_line:
+    build:
+      context: .
+      dockerfile: a_line.Dockerfile
+    environment:
+      - POWER_TYPE=A_line
+      - PORT=9000
+      - MONGO=10.0.0.5:27017
+    ports:
+      - "9000:9000"
+    networks: 
+      my_service:
+        ipv4_address: 10.0.0.4
+  
+  balanceador:
+    build:
+      context: .
+      dockerfile: balanceador.Dockerfile
+    environment:
+      - PEER_A=10.0.0.3:8000
+      - PEER_A_LINE=10.0.0.4:9000
+    ports:
+      - "80:80"
+    depends_on:
+      - a
+      - a_line
+    networks:
+      my_service:
+        ipv4_address: 10.0.0.2
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: MongoDB
+      MONGO_INITDB_DATABASE: potencias
+    ports:
+      - "27017:27017"
+    networks:
+      my_service:
+        ipv4_address: 10.0.0.5
+    volumes:
+     - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+networks:
+  my_service:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24

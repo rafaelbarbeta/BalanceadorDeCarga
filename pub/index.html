@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculadora de Potências</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/pub/index.css">
+</head>
+<body>
+    <div class="form">
+        <div class="title">Calculadora de Potências</div>
+        <div class="input-container ic1">
+          <input id="x" class="input" type="text" placeholder=" " />
+          <div class="cut"></div>
+          <label for="firstname" class="placeholder">x</label>
+        </div>
+        <div class="input-container ic2">
+          <input id="y" class="input" type="text" placeholder=" " />
+          <div class="cut"></div>
+          <label for="lastname" class="placeholder">y</label>
+        </div>
+        <button type="text" class="submit" onclick="post_xy()">submit</button>
+        <button type="text" class="submit" onclick="get_all()">Get All Values</button>
+      </div>
+      <script>
+        function post_xy() {
+          const x_value = document.getElementById("x").value;
+          const y_value = document.getElementById("y").value;
+          console.log(x_value)
+          fetch("/power", {
+              method: "POST",
+              body: JSON.stringify({
+                x: x_value,
+                y: y_value
+          }),
+          headers: {
+              "Content-type": "application/json; charset=UTF-8"
+          }
+          }).then((response) => response.json())
+            .then((data) => alert(data.mensagem));
+        }
+        function get_all() {
+          bd_values = []
+          fetch("/getValues", {
+              method: "GET",
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+          }).then((response) => response.json())
+            .then((data) => alert(JSON.stringify(data)));
+        }
+      </script>
+</body>
+</html>
