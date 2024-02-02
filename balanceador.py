@@ -75,7 +75,7 @@ def heart_beater():
                 if service in peers:
                     peers.remove(service)
                 print(f"{service} is dead! Removing from peer list..")
-        time.sleep(1)
+        time.sleep(5)
 
 if __name__ == "__main__":
     port = 80
