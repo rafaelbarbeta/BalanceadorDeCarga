@@ -11,6 +11,8 @@ services:
       - MONGO=10.0.0.5:27017
     ports:
       - "8000:8000"
+    depends_on:
+      - mongo
     networks:
       my_service:
         ipv4_address: 10.0.0.3
@@ -25,6 +27,8 @@ services:
       - MONGO=10.0.0.5:27017
     ports:
       - "9000:9000"
+    depends_on:
+      - mongo
     networks: 
       my_service:
         ipv4_address: 10.0.0.4
