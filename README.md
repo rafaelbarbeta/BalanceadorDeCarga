@@ -21,3 +21,4 @@ sudo docker compose start a_line
 sudo docker compose down
 sudo docker volume prune
 ```
+![image](https://github.com/rafaelbarbeta/BalanceadorDeCarga/assets/96304813/76ada5f3-d5aa-496b-a9bd-0f326a23745a)
